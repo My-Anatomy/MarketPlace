@@ -1,11 +1,6 @@
-import React from 'react'
+import React from "react";
 
 const AdminUsers = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
-
-export default AdminUsers
+  return <div></div>;
+};
+export default AdminUsers;

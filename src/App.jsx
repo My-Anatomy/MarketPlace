@@ -42,7 +42,7 @@ function App() {
                 <Route path="/categories" element={<CategoriesPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-
+                
                 {/* Protected Routes */}
                 <Route path="/profile" element={
                   <ProtectedRoute>
