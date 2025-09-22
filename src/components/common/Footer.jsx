@@ -34,7 +34,6 @@ const Footer = () => {
               </a>
             </div>
           </div>
-
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
@@ -61,7 +60,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
           {/* Support */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Support</h3>
@@ -88,7 +86,6 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
           {/* Contact */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
@@ -108,9 +105,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
         <hr className="border-gray-700 my-8" />
-
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
             © 2025 MarketPlace. All rights reserved.
@@ -135,3 +130,4 @@ const Footer = () => {
 };
 
 export default Footer;
+// Check Github

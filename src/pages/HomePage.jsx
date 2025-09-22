@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, TrendingUp, Shield, Users, ChevronRight, Star } from 'lucide-react';
-import { productsAPI, categoriesAPI } from '../services/api';
-import ProductCard from '../components/products/ProductCard';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  Search,
+  TrendingUp,
+  Shield,
+  Users,
+  ChevronRight,
+  Star,
+} from "lucide-react";
+import { productsAPI, categoriesAPI } from "../services/api";
+import ProductCard from "../components/products/ProductCard";
 
 const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -14,12 +21,12 @@ const HomePage = () => {
       try {
         const [productsRes, categoriesRes] = await Promise.all([
           productsAPI.getAll({ limit: 8 }),
-          categoriesAPI.getAll()
+          categoriesAPI.getAll(),
         ]);
         setFeaturedProducts(productsRes.data.data.products || []);
         setCategories(categoriesRes.data.data || []);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -29,10 +36,10 @@ const HomePage = () => {
   }, []);
 
   const stats = [
-    { icon: Users, label: 'Active Users', value: '10,000+' },
-    { icon: TrendingUp, label: 'Items Sold', value: '50,000+' },
-    { icon: Shield, label: 'Safe Transactions', value: '99.9%' },
-    { icon: Star, label: 'User Rating', value: '4.8/5' },
+    { icon: Users, label: "Active Users", value: "10,000+" },
+    { icon: TrendingUp, label: "Items Sold", value: "50,000+" },
+    { icon: Shield, label: "Safe Transactions", value: "99.9%" },
+    { icon: Star, label: "User Rating", value: "4.8/5" },
   ];
 
   return (
@@ -46,8 +53,8 @@ const HomePage = () => {
               Buy & Sell with <span className="text-blue-300">Confidence</span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Discover amazing deals on quality used items or sell your pre-loved goods 
-              to people who will treasure them.
+              Discover amazing deals on quality used items or sell your
+              pre-loved goods to people who will treasure them.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -79,7 +86,9 @@ const HomePage = () => {
                   <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon className="w-8 h-8 text-blue-600" />
                   </div>
-                  <p className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-2">
+                    {stat.value}
+                  </p>
                   <p className="text-gray-600">{stat.label}</p>
                 </div>
               );
@@ -113,7 +122,7 @@ const HomePage = () => {
                   className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-center border border-gray-200 hover:border-blue-300"
                 >
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-200 transition-colors duration-200">
-                    <span className="text-2xl">{category.icon || '📦'}</span>
+                    <span className="text-2xl">{category.icon || "📦"}</span>
                   </div>
                   <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
                     {category.name}
@@ -192,8 +201,8 @@ const HomePage = () => {
                 Sign Up & Browse
               </h3>
               <p className="text-gray-600">
-                Create your account and start browsing thousands of quality used items 
-                from trusted sellers in your area.
+                Create your account and start browsing thousands of quality used
+                items from trusted sellers in your area.
               </p>
             </div>
 
@@ -205,7 +214,7 @@ const HomePage = () => {
                 Connect & Negotiate
               </h3>
               <p className="text-gray-600">
-                Message sellers directly, ask questions, and negotiate prices. 
+                Message sellers directly, ask questions, and negotiate prices.
                 Our secure messaging system keeps your conversations safe.
               </p>
             </div>
@@ -218,7 +227,7 @@ const HomePage = () => {
                 Meet & Exchange
               </h3>
               <p className="text-gray-600">
-                Arrange a safe meeting place and complete your transaction. 
+                Arrange a safe meeting place and complete your transaction.
                 Leave reviews to help build our trusted community.
               </p>
             </div>
