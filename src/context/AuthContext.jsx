@@ -1,20 +1,32 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const AuthContext = createContext();
+// ----- API METHODS -----
+const authAPI = {
+  login: (data) => axios.post('/login', data),       // proxy to backend /api/auth/login
+  register: (data) => axios.post('/register', data), // proxy to backend /api/auth/register
+  getProfile: () => axios.get('/profile', {          // proxy to backend /api/auth/profile
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    }
+  }),
+};
 
+// ----- INITIAL STATE -----
+const initialState = {
+  user: null,
+  token: localStorage.getItem('token'),
+  loading: false,
+};
+
+// ----- REDUCER -----
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
     case 'SET_USER':
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        loading: false
-      };
+      return { ...state, user: action.payload.user, token: action.payload.token, loading: false };
     case 'UPDATE_USER':
       return { ...state, user: action.payload };
     case 'LOGOUT':
@@ -24,22 +36,19 @@ const authReducer = (state, action) => {
   }
 };
 
-export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    user: null,
-    token: localStorage.getItem('token'),
-    loading: false
-  });
+// ----- CONTEXT -----
+const AuthContext = createContext();
 
+export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
+  // Load user profile if token exists
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       authAPI.getProfile()
-        .then(response => {
-          dispatch({ 
-            type: 'SET_USER', 
-            payload: { user: response.data.data, token } 
-          });
+        .then((response) => {
+          dispatch({ type: 'SET_USER', payload: { user: response.data.user, token } });
         })
         .catch(() => {
           localStorage.removeItem('token');
@@ -48,12 +57,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // ----- LOGIN -----
   const login = async (email, password) => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const response = await authAPI.login({ email, password });
-      const { user, token } = response.data.data;
-      
+      const { user, token } = response.data;
       localStorage.setItem('token', token);
       dispatch({ type: 'SET_USER', payload: { user, token } });
       toast.success('Login successful!');
@@ -64,12 +73,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ----- REGISTER -----
   const register = async (userData) => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const response = await authAPI.register(userData);
-      const { user, token } = response.data.data;
-      
+      const { user, token } = response.data;
       localStorage.setItem('token', token);
       dispatch({ type: 'SET_USER', payload: { user, token } });
       toast.success('Registration successful!');
@@ -80,35 +89,28 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ----- LOGOUT -----
   const logout = () => {
     localStorage.removeItem('token');
     dispatch({ type: 'LOGOUT' });
     toast.success('Logged out successfully');
   };
 
+  // ----- UPDATE USER -----
   const updateUser = (user) => {
     dispatch({ type: 'UPDATE_USER', payload: user });
   };
 
   return (
-    <AuthContext.Provider 
-      value={{
-        ...state,
-        login,
-        register,
-        logout,
-        updateUser
-      }}
-    >
+    <AuthContext.Provider value={{ ...state, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// ----- CUSTOM HOOK -----
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
