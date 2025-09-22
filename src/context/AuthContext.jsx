@@ -4,13 +4,14 @@ import toast from 'react-hot-toast';
 
 // ----- API METHODS -----
 const authAPI = {
-  login: (data) => axios.post('/login', data),       // proxy to backend /api/auth/login
-  register: (data) => axios.post('/register', data), // proxy to backend /api/auth/register
-  getProfile: () => axios.get('/profile', {          // proxy to backend /api/auth/profile
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    }
-  }),
+  login: (data) => axios.post('/auth/login', data),
+  register: (data) => axios.post('/auth/register', data),
+  getProfile: () =>
+    axios.get('/auth/profile', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }),
 };
 
 // ----- INITIAL STATE -----
@@ -114,3 +115,4 @@ export const useAuth = () => {
   if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 };
+ 

@@ -5,8 +5,8 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      tls: true,
-      tlsAllowInvalidCertificates: true, // TEMP for Windows SSL issues
+      tls: false,  // Disable TLS if connecting locally
+      // tlsAllowInvalidCertificates: true, // optional for SSL issues
     });
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {

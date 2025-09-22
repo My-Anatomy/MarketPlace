@@ -58,6 +58,8 @@ const RegisterPage = () => {
     try {
       const { confirmPassword, ...userData } = formData;
       await register(userData);
+      console.log(userData);
+      
       navigate('/');
     } catch (error) {
       // Error handling (e.g. setErrors({ global: error.response.data.message }));
